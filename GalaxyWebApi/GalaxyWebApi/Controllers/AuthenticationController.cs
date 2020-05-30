@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
+using GalaxyCore.Contracts;
+using GalaxyDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Swashbuckle.Swagger.Annotations;
-using WebService1.BLL.Contracts;
 
 namespace GalaxyWebApi.Controllers
 {
     /// <summary>
     /// Контроллер авторизации.
     /// </summary>
+    [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     [Produces("application/json")]
     public class AuthController : ControllerBase
     {
@@ -31,24 +29,21 @@ namespace GalaxyWebApi.Controllers
         /// </summary>       
         /// <returns>Сгенерированный токен.</returns>        
         [AllowAnonymous]
-        [HttpGet("token")]
-        [SwaggerResponse((int)HttpStatusCode.OK, Description = "Generated token")]
-        [SwaggerResponse((int)HttpStatusCode.InternalServerError, Description = "Unexpected error")]
-        public IActionResult GenerateToken()
+        [HttpPost]
+        [SwaggerResponse((int)HttpStatusCode.OK, Description = "Токен сгенерирован")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Неверный логин/пароль")]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, Description = "Внутренняя ошибка сервера")]
+        public IActionResult GenerateToken(AuthorizationDto authData)
         {
-            var token = _jwtTokenService.GenerateToken();
+            var token = _jwtTokenService.GenerateToken(authData.Username);
+
             return Ok(token);
         }
-
-        /// <summary>
-        /// Validate sample token
-        /// </summary>
-        /// <param name="token">Token for validation</param>
-        /// <returns>Token validation status</returns>        
-        [HttpPost("validate")]
-        [SwaggerResponse((int)HttpStatusCode.OK, Description = "Token validation status")]
-        [SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Bad request for missing or invalid parameter")]
-        [SwaggerResponse((int)HttpStatusCode.InternalServerError, Description = "Unexpected error")]
+ 
+        [HttpPost]
+        [SwaggerResponse((int)HttpStatusCode.OK, Description = "Токен в валидном статусе")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Ошибка в теле запроса")]
+        [SwaggerResponse((int)HttpStatusCode.InternalServerError, Description = "Внутренняя ошибка сервера")]
         public IActionResult ValidateToken([FromBody] string token)
         {
             if (string.IsNullOrEmpty(token))
@@ -60,5 +55,4 @@ namespace GalaxyWebApi.Controllers
             return Ok(new { isValid });
         }
     }
-
 }

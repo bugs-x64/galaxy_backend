@@ -1,14 +1,15 @@
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using WebService1.BLL.Contracts;
-using WebService1.BLL.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
+using GalaxyCore.Contracts;
+using GalaxyCore.Models;
+using GalaxyDto;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
-namespace WebService1.BLL
+namespace GalaxyCore
 {
     public class JwtTokenService : IJwtTokenService
     {
@@ -19,25 +20,33 @@ namespace WebService1.BLL
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
-        public string GenerateToken()
+        public TokenDto GenerateToken(string username)
         {
-            var nowDT = DateTime.UtcNow;
+            var utcNow = DateTime.UtcNow;
+            var expires = utcNow.AddMonths(1);
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_options.CurrentValue.JwtSecretKey);
+            var key = Encoding.UTF8.GetBytes(_options.CurrentValue.JwtSecretKey);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                NotBefore = nowDT,
-                Subject = new ClaimsIdentity(new Claim[]
+                NotBefore = utcNow,
+                Subject = new ClaimsIdentity(new []
                 {
-                        new Claim("dt", nowDT.ToString("yyyy-MM-ddTHH:mm:ssK"))
+                    new Claim("dt", utcNow.ToString("yyyy-MM-ddTHH:mm:ssK")),
+                    new Claim("username", username)
                 }),
-                Expires = nowDT.AddMonths(1),
+                Expires = expires,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var finalToken = tokenHandler.WriteToken(token);
 
-            return finalToken;
+            return new TokenDto
+            {
+                username = username,
+                access_token = finalToken,
+                token_type = "Bearer",
+                expires_in = (expires - utcNow).TotalSeconds
+            };
         }
 
         public bool ValidateToken(string token)
@@ -53,7 +62,7 @@ namespace WebService1.BLL
 
             try
             {
-                IPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+                _ = tokenHandler.ValidateToken(token, validationParameters, out _);
                 return true;
             }
             catch
