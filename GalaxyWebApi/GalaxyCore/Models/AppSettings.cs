@@ -1,4 +1,4 @@
-namespace GalaxyWebApi.Models
+namespace GalaxyCore.Models
 {
     public class AppSettings
     {

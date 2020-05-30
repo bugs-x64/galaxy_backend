@@ -1,9 +1,9 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text;
 using GalaxyCore.Contracts;
+using GalaxyCore.Models;
 using GalaxyDto;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -12,9 +12,9 @@ namespace GalaxyCore
 {
     public class JwtTokenService : IJwtTokenService
     {
-        private readonly IOptionsMonitor<CarsBLLOptions> _options;
+        private readonly IOptionsMonitor<AppSettings> _options;
 
-        public JwtTokenService(IOptionsMonitor<CarsBLLOptions> options)
+        public JwtTokenService(IOptionsMonitor<AppSettings> options)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }

@@ -22,7 +22,7 @@ namespace GalaxyRepository
         {
             if (!optionsBuilder.IsConfigured)
             {
-                throw new Exception("galaxyContext, отсутствует конфигурация для подклчюения.");
+                throw new Exception("galaxyContext, отсутствует конфигурация для подключения.");
             }
         }
 

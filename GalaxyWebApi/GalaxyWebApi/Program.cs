@@ -28,8 +28,7 @@ namespace GalaxyWebApi
                 try
                 {
                     var context = services.GetRequiredService<GalaxyContext>();
-                    if(!context.Database.EnsureCreated())
-                        throw new Exception();
+                   context.Database.EnsureCreated();
                 }
                 catch (Exception ex)
                 {
