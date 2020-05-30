@@ -3,6 +3,9 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
+using GalaxyRepository;
+using GalaxyRepository.Contracts;
+using GalaxyRepository.Models;
 using GalaxyWebApi.Models;
 using GalaxyWebApi.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,6 +13,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,6 +38,13 @@ namespace GalaxyWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //подклчюение к БД
+            services.AddDbContext<GalaxyContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DbConnectionString")));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+
+            // параметры webapi
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
             var appSettings = appSettingsSection.Get<AppSettings>();

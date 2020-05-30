@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using GalaxyCore.Contracts;
-using GalaxyCore.Models;
 using GalaxyDto;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

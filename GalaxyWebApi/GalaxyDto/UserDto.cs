@@ -8,18 +8,32 @@ namespace GalaxyDto
     public class UserDto
     {
         /// <summary>
+        /// Идентификатор пользователя.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Логин пользователя.
+        /// </summary>
+        public string Username { get; set; }
+
+        /// <summary>
         /// Имя.
         /// </summary>
-        public string Name { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Дата рождения.
         /// </summary>
-        public DateTime BirthData { get; set; }
+        public DateTime Birthdate { get; set; }
 
         /// <summary>
         /// Баланс.
         /// </summary>
         public double Amount { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public DateTime Modified { get; set; }
     }
 }

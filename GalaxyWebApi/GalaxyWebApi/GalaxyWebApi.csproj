@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GalaxyCore\GalaxyCore.csproj" />
+    <ProjectReference Include="..\GalaxyRepository\GalaxyRepository.csproj" />
   </ItemGroup>
 
 

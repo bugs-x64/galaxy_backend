@@ -1,8 +1,7 @@
-namespace GalaxyCore.Models
+namespace GalaxyCore
 {
     public class CarsBLLOptions
     {
         public string JwtSecretKey { get; set; }
-        public string WebApiUrl { get; set; }
     }
 }
