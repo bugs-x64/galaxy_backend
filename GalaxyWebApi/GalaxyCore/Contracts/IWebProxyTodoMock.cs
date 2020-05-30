@@ -1,8 +1,8 @@
-using WebService1.BLL.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GalaxyCore.Models;
 
-namespace WebService1.BLL.Contracts
+namespace GalaxyCore.Contracts
 {
     public interface ITodosMockProxyService
     {

@@ -1,16 +1,16 @@
-using Dapper;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Options;
-using MySql.Data.MySqlClient;
-using WebService1.DAL.MySql.Contract;
-using WebService1.DAL.MySql.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
+using GalaxyCore.Contract;
+using GalaxyCore.Models;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
+using MySql.Data.MySqlClient;
 
-namespace WebService1.DAL.MySql
+namespace GalaxyCore
 {
     public class CarsRepository : ICarsRepository, IHealthCheck
     {
@@ -46,11 +46,9 @@ namespace WebService1.DAL.MySql
                     @createdon,
                     @modifiedon);";
 
-            using (var db = new MySqlConnection(_options.CurrentValue.CarsDbConnectionString))
-            {
-                await db.ExecuteAsync(sqlQuery, newCar, commandType: CommandType.Text);
-                return newCar;
-            }
+            using var db = new MySqlConnection(_options.CurrentValue.CarsDbConnectionString);
+            await db.ExecuteAsync(sqlQuery, newCar, commandType: CommandType.Text);
+            return newCar;
         }
 
         public async Task<CarEntity> GetCarAsync(Guid id)

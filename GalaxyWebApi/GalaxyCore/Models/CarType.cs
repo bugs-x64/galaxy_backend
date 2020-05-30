@@ -1,4 +1,4 @@
-namespace WebService1.BLL.Models
+namespace GalaxyCore.Models
 {
     public enum CarType
     {
@@ -15,7 +15,7 @@ namespace WebService1.BLL.Models
         /// <summary>
         /// SUV
         /// </summary>
-        SUV = 2,
+        Suv = 2,
 
         /// <summary>
         /// Coupe

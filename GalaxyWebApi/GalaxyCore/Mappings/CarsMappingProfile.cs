@@ -1,9 +1,8 @@
-using AutoMapper;
-using WebService1.BLL.Models;
-using WebService1.DAL.MySql.Models;
 using System;
+using AutoMapper;
+using GalaxyCore.Models;
 
-namespace WebService1.BLL.Mappings
+namespace GalaxyCore.Mappings
 {
     public class CarsMapping : Profile
     {

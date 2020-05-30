@@ -1,18 +1,10 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Polly;
-using WebService1.BLL;
-using WebService1.BLL.Contracts;
-using WebService1.BLL.Models;
-using WebService1.DAL.MySql;
-using WebService1.DAL.MySql.Contract;
 using System;
-using System.Linq;
+using GalaxyCore;
+using GalaxyCore.Contract;
+using GalaxyCore.Contracts;
+using GalaxyCore.Models;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

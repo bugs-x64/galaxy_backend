@@ -1,4 +1,4 @@
-namespace WebService1.API.Models
+namespace GalaxyWebApi.Models
 {
     /// <summary>
     /// Car type

@@ -1,6 +1,6 @@
 using System;
 
-namespace WebService1.DAL.MySql.Models
+namespace GalaxyCore.Models
 {
     public class CarEntity
     {

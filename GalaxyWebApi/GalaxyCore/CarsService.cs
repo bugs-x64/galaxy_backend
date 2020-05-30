@@ -1,13 +1,12 @@
-using AutoMapper;
-using WebService1.BLL.Contracts;
-using WebService1.BLL.Models;
-using WebService1.DAL.MySql.Contract;
-using WebService1.DAL.MySql.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using GalaxyCore.Contract;
+using GalaxyCore.Contracts;
+using GalaxyCore.Models;
 
-namespace WebService1.BLL
+namespace GalaxyCore
 {
     public class CarsService : ICarsService
     {

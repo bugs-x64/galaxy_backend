@@ -1,6 +1,6 @@
 using System;
 
-namespace WebService1.BLL.Models
+namespace GalaxyCore.Models
 {
     public class Car
     {

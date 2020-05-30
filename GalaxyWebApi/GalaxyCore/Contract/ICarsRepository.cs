@@ -1,9 +1,9 @@
-using WebService1.DAL.MySql.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GalaxyCore.Models;
 
-namespace WebService1.DAL.MySql.Contract
+namespace GalaxyCore.Contract
 {
     public interface ICarsRepository
     {

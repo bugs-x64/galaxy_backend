@@ -1,4 +1,4 @@
-namespace WebService1.DAL.MySql
+namespace GalaxyCore.Models
 {
     public class CarsMySqlRepositoryOption
     {

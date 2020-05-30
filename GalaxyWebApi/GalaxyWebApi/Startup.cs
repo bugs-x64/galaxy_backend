@@ -3,6 +3,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
+using GalaxyWebApi.Models;
+using GalaxyWebApi.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -18,11 +19,6 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using WebService1.API.Models;
-using WebService1.API.Swagger;
-using WebService1.BLL;
-using WebService1.BLL.Contracts;
-using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace GalaxyWebApi
 {
@@ -38,16 +34,6 @@ namespace GalaxyWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //var appSettingsSection = Configuration.GetSection("AppSettings");
-            //services.Configure<AppSettings>(appSettingsSection);
-            //var appSettings = appSettingsSection.Get<AppSettings>();
-
-
-            //services.AddControllers();
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            //});
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
             var appSettings = appSettingsSection.Get<AppSettings>();
@@ -100,15 +86,15 @@ namespace GalaxyWebApi
 
                 opt.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Description = "Authorization header. Example: \"bearer {token}\"",
+                    Description = "Заголовок авторизации. Пример: \"Bearer {token}\"",
                     In = ParameterLocation.Header,
-                    Name = "authorization",
+                    Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey
                 });
                 opt.OperationFilter<SecurityRequirementsOperationFilter>();
             });
 
-            var key = Encoding.ASCII.GetBytes(appSettings.JwtSecretKey);
+            var key = Encoding.UTF8.GetBytes(appSettings.JwtSecretKey);
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -141,9 +127,22 @@ namespace GalaxyWebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
+            }
 
+            app.UseStaticFiles();
+            app.UseRouting();
+
+            app.UseCors("AllowSpecificOrigin");
+
+
+            app.UseSwagger();
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
@@ -151,15 +150,8 @@ namespace GalaxyWebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
             app.UseHttpsRedirection();
-
-            app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

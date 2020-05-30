@@ -1,4 +1,4 @@
-namespace WebService1.BLL.Models
+namespace GalaxyCore.Models
 {
     public class CarsBLLOptions
     {

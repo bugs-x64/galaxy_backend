@@ -1,8 +1,8 @@
-using WebService1.API.Models;
-using Swashbuckle.AspNetCore.Filters;
 using System;
+using GalaxyWebApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
-namespace WebService1.API.Swagger
+namespace GalaxyWebApi.Swagger
 {
     public class CarModelExample : IExamplesProvider<Car>
     {
