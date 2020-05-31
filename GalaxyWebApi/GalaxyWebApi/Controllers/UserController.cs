@@ -22,12 +22,14 @@ namespace GalaxyWebApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private IJwtTokenService _jwtTokenService;
+        private readonly IJwtTokenService _jwtTokenService;
+        private readonly IAuthService _authService;
 
-        public UserController(IUserService userService, IJwtTokenService jwtTokenService)
+        public UserController(IUserService userService, IJwtTokenService jwtTokenService, IAuthService authService)
         {
             _userService = userService;
             _jwtTokenService = jwtTokenService;
+            _authService = authService;
         }
 
         private static object GetUserData(UserDto user) => new
@@ -44,6 +46,9 @@ namespace GalaxyWebApi.Controllers
         public async Task<IActionResult> CreateAsync(NewUserDto authData)
         {
             var result = await _userService.CreateAsync(authData);
+
+            await _authService.CreatePasswordAsync(authData.Username, authData.Password);
+
             var token = _jwtTokenService.GenerateToken(result.Username);
             return Ok(token);
         }

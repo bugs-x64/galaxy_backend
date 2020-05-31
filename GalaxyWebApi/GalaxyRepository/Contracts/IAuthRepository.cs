@@ -1,27 +1,29 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GalaxyDto;
 using GalaxyRepository.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GalaxyRepository.Contracts
 {
     public interface IAuthRepository
     {
-        Task CreatePassword(int userId, byte[] passwordHashBytes);
+        Task CreatePasswordAsync(int userId, byte[] passwordHashBytes);
 
-        Task<byte[]> GetPassword(int userId);
+        Task<byte[]> GetPasswordAsync(int userId);
     }
 
     public class AuthRepository : IAuthRepository
     {
-        private GalaxyContext _context;
+        private readonly GalaxyContext _context;
 
         public AuthRepository(GalaxyContext context)
         {
             _context = context;
         }
 
-        public async Task CreatePassword(int userId, byte[] passwordHashBytes)
+        public async Task CreatePasswordAsync(int userId, byte[] passwordHashBytes)
         {
             await _context.Password.AddAsync(new Password()
             {
@@ -32,9 +34,13 @@ namespace GalaxyRepository.Contracts
             await _context.SaveChangesAsync(true);
         }
 
-        public Task<byte[]> GetPassword(int userId)
+        public async Task<byte[]> GetPasswordAsync(int userId)
         {
-            throw new System.NotImplementedException();
+            var lastPasswordId =  _context.Password.Max(x=>x.Id);
+
+            var password = await _context.Password.SingleAsync(x => x.Id == lastPasswordId);
+
+            return password.PasswordHash;
         }
     }
 }

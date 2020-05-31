@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -47,6 +48,7 @@ namespace GalaxyWebApi
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             // параметры webapi
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -54,12 +56,7 @@ namespace GalaxyWebApi
             var appSettings = appSettingsSection.Get<AppSettings>();
 
             services.AddControllers();
-
-            services.AddWebServices(
-                BLLOptionsSection: Configuration.GetSection("AppSettings"),
-                DALOptionSection: Configuration.GetSection("ConnectionStrings")
-            );
-
+            
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHttpClient();
 
@@ -137,6 +134,10 @@ namespace GalaxyWebApi
 
             Log.Logger = logger.CreateLogger();
             Log.Information("web api service is started.");
+
+            services.TryAddScoped<IJwtTokenService, JwtTokenService>();
+
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

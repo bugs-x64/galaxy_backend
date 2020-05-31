@@ -68,6 +68,27 @@ namespace GalaxyRepository
             return result;
         }
 
+        public async Task<UserDto> GetAsync(string username)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(x => x.Username.Equals(username));
+
+            if (user == null)
+                return null;
+
+            var result = new UserDto()
+            {
+                Username = user.Username,
+                Birthdate = user.Birthdate,
+                Created = user.Created,
+                FirstName = user.FirstName,
+                Amount = user.Amount,
+                Modified = user.Modified,
+                Id = user.Id
+            };
+
+            return result;
+        }
+
         public async Task<bool> UpdateAsync(UserDto user)
         {
             var entity = _context.User.FirstOrDefault(item => item.Id == user.Id);

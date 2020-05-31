@@ -31,7 +31,7 @@ namespace GalaxyCore.Services
             };
 
             var outputData = await _userRepository.CreateAsync(inputData);
-            await _authRepository.CreatePassword(outputData.Id, Encoding.UTF8.GetBytes(newUser.Password));
+            await _authRepository.CreatePasswordAsync(outputData.Id, Encoding.UTF8.GetBytes(newUser.Password));
 
             return outputData;
         }

@@ -14,7 +14,6 @@ namespace GalaxyCore.Services
     public class JwtTokenService : IJwtTokenService
     {
         private readonly IOptionsMonitor<AppSettings> _options;
-        private readonly string _usernameClaimType = "username";
 
         public JwtTokenService(IOptionsMonitor<AppSettings> options)
         {
@@ -30,10 +29,10 @@ namespace GalaxyCore.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 NotBefore = utcNow,
-                Subject = new ClaimsIdentity(new []
+                Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("dt", utcNow.ToString("yyyy-MM-ddTHH:mm:ssK")),
-                    new Claim(_usernameClaimType, username)
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, username)
                 }),
                 Expires = expires,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -76,9 +75,9 @@ namespace GalaxyCore.Services
         {
             var handler = new JwtSecurityTokenHandler();
             var securityToken = handler.ReadToken(token) as JwtSecurityToken;
-            var username = securityToken?.Claims.First(claim => claim.Type == _usernameClaimType).Value;
+            var username = securityToken?.Claims.First(claim => claim.Type == ClaimsIdentity.DefaultNameClaimType).Value;
 
-            if(username is null)
+            if (username is null)
                 throw new CustomException("Указанный токен не содержит информацию о пользователе.");
 
             return username;
