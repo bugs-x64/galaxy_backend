@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.4" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.6.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.20" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GalaxyDto\GalaxyDto.csproj" />
+    <ProjectReference Include="..\GalaxyRepository\GalaxyRepository.csproj" />
+  </ItemGroup>
+
+</Project>
