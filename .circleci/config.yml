@@ -12,4 +12,4 @@ jobs:
       - checkout
       - run:
           name: "Build Application according to some given configuration"
-          command: dotnet.exe build --configuration Release
+          command: dotnet.exe "GalaxyWebApi/GalaxyWebApi.sln" build --configuration Release
