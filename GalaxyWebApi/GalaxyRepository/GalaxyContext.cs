@@ -30,16 +30,15 @@ namespace GalaxyRepository
         {
             modelBuilder.Entity<Password>(entity =>
             {
-                entity.Property(e => e.PasswordHash)
-                    .IsRequired()
-                    .HasColumnName("PasswordHash");
+                entity.HasIndex(e => e.Userid);
+
+                entity.Property(e => e.PasswordHash).IsRequired();
 
                 entity.Property(e => e.Userid).HasColumnName("userid");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Password)
                     .HasForeignKey(d => d.Userid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Password_user");
             });
 
@@ -48,29 +47,29 @@ namespace GalaxyRepository
                 entity.HasIndex(e => e.Username)
                     .HasName("index_user_username");
 
+                entity.Property(e => e.Amount)
+                    .HasColumnName("amount")
+                    .HasColumnType("money");
+
                 entity.Property(e => e.Birthdate).HasColumnType("datetime");
 
                 entity.Property(e => e.Created)
                     .HasColumnName("created")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Modified)
-                    .HasColumnName("modified")
-                    .HasColumnType("datetime");
-
                 entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasMaxLength(4000)
-                    .IsUnicode(false);
+                    .IsUnicode();
+
+                entity.Property(e => e.Modified)
+                    .HasColumnName("modified")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Username)
                     .IsRequired()
                     .HasMaxLength(4000)
                     .IsUnicode(false);
-                
-                entity.Property(e => e.Amount)
-                    .HasColumnName("amount")
-                    .HasColumnType("money");
             });
 
             OnModelCreatingPartial(modelBuilder);

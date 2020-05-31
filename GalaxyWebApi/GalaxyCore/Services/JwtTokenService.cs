@@ -8,7 +8,7 @@ using GalaxyDto;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace GalaxyCore
+namespace GalaxyCore.Services
 {
     public class JwtTokenService : IJwtTokenService
     {

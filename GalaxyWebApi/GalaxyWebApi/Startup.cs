@@ -3,7 +3,9 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
+using GalaxyCore.Contracts;
 using GalaxyCore.Models;
+using GalaxyCore.Services;
 using GalaxyRepository;
 using GalaxyRepository.Contracts;
 using GalaxyRepository.Models;
@@ -43,6 +45,7 @@ namespace GalaxyWebApi
                 options.UseSqlServer(Configuration.GetConnectionString("DbConnectionString")));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IUserService, UserService>();
 
             // параметры webapi
             var appSettingsSection = Configuration.GetSection("AppSettings");

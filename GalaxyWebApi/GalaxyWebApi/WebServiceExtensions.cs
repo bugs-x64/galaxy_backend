@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using GalaxyCore;
 using GalaxyCore.Contracts;
+using GalaxyCore.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

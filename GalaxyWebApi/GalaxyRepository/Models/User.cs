@@ -16,7 +16,7 @@ namespace GalaxyRepository.Models
         public DateTime Birthdate { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         public virtual ICollection<Password> Password { get; set; }
     }

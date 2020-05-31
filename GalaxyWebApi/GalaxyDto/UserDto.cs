@@ -30,7 +30,7 @@ namespace GalaxyDto
         /// <summary>
         /// Баланс.
         /// </summary>
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         public DateTime Created { get; set; }
 

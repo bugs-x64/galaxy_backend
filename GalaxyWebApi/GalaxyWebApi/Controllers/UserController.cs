@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using GalaxyCore;
 using GalaxyCore.Contracts;
+using GalaxyCore.Services;
 using GalaxyDto;
 using GalaxyRepository.Contracts;
-using GalaxyRepository.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.Swagger.Annotations;
 
 namespace GalaxyWebApi.Controllers
 {
@@ -22,62 +21,79 @@ namespace GalaxyWebApi.Controllers
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
-        private readonly IJwtTokenService _jwtTokenService;
-        private readonly IUserRepository _userRepository;
-        private readonly IAuthRepository _authRepository;
+        private readonly IUserService _userService;
+        private IJwtTokenService _jwtTokenService;
 
-        public UserController(IJwtTokenService jwtTokenService, IUserRepository userRepository, IAuthRepository authRepository)
+        public UserController(IUserService userService, IJwtTokenService jwtTokenService)
         {
-            _jwtTokenService = jwtTokenService ?? throw new ArgumentNullException(nameof(jwtTokenService));
-            _userRepository = userRepository;
-            _authRepository = authRepository;
+            _userService = userService;
+            _jwtTokenService = jwtTokenService;
         }
 
-        private object GetUserData(UserDto user) => new {user.Id, user.Created, user.Username, user.FirstName, user.Birthdate};
+        private static object GetUserData(UserDto user) => new
+        {
+            user.Id, 
+            user.Created, 
+            user.Username, 
+            user.FirstName, 
+            user.Birthdate
+        };
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Create(NewUserDto authData)
+        public async Task<IActionResult> CreateAsync(NewUserDto authData)
         {
-            var userDto = new UserDto()
-            {
-                Username = authData.Username,
-                Birthdate = authData.Birthdate,
-                FirstName = authData.Firstname
-            };
-           var qwe =  await _userRepository.CreateAsync(userDto);
-
-           await _authRepository.CreatePassword(qwe.Id, Encoding.UTF8.GetBytes(authData.Password));
-
-
-            var token = _jwtTokenService.GenerateToken(authData.Username);
+            var result = await _userService.CreateAsync(authData);
+            var token = _jwtTokenService.GenerateToken(result.Username);
             return Ok(token);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsersAsync(int page = 0, int size = 1000)
         {
-            var users = await _userRepository.GetUsersAsync(0, 1000);
-            return Ok(users.Select(GetUserData));
+            var users = await _userService.GetUsersAsync(page, size);
+            var result = users.Select(GetUserData);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
+        public async Task<IActionResult> GetUserAsync(int id)
         {
-            var user = await _userRepository.GetAsync(id);
-            return Ok(GetUserData(user));
+            var user = await _userService.GetAsync(id);
+            var result = GetUserData(user);
+            return Ok(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUser(int id, UserDto user)
+        public async Task<IActionResult> UpdateUserAsync(int id, UserDto user)
         {
-            return Ok();
+            if (id != user.Id)
+                return BadRequest();
+
+            try
+            {
+                await _userService.UpdateAsync(user);
+
+                return Ok();
+            }
+            catch (CustomException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUserAsync(int id)
         {
-            return Ok(await _userRepository.DeleteAsync(id));
+            try
+            {
+                return Ok(await _userService.DeleteAsync(id));
+            }
+            catch (CustomException e)
+            {
+                return BadRequest(e.Message);
+            }
+            
         }
     }
 }
