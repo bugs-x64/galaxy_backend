@@ -1,15 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using GalaxyCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GalaxyWebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class BrokenController : ControllerBase
     {
-        [HttpPost]
-        public object Get()
+        [HttpGet]
+        public void UnhandledException()
         {
-            return "";
+            throw new NullReferenceException();
+        }
+
+        [HttpGet]
+        public void LogicException()
+        {
+            throw new CustomException();
         }
     }
 }

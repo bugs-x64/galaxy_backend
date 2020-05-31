@@ -9,6 +9,7 @@ using GalaxyCore.Services;
 using GalaxyRepository;
 using GalaxyRepository.Contracts;
 using GalaxyRepository.Models;
+using GalaxyWebApi.Middleware;
 using GalaxyWebApi.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -155,6 +156,7 @@ namespace GalaxyWebApi
 
             app.UseCors("AllowSpecificOrigin");
 
+            app.UseHttpContextMiddleware();
 
             app.UseSwagger();
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
