@@ -8,6 +8,7 @@ using GalaxyCore.Models;
 using GalaxyCore.Services;
 using GalaxyRepository;
 using GalaxyRepository.Contracts;
+using GalaxyRepository.MapProfiles;
 using GalaxyRepository.Models;
 using GalaxyWebApi.Middleware;
 using GalaxyWebApi.Swagger;
@@ -57,7 +58,7 @@ namespace GalaxyWebApi
 
             services.AddControllers();
             
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            AddAutoMapper(services);
             services.AddHttpClient();
 
             services.AddVersionedApiExplorer(opt =>
@@ -138,6 +139,15 @@ namespace GalaxyWebApi
             services.TryAddScoped<IJwtTokenService, JwtTokenService>();
 
             services.AddHttpClient();
+        }
+
+        private static void AddAutoMapper(IServiceCollection services)
+        {
+            var profileAssemblyMarkerTypes = new []
+            {
+                typeof(UserProfile),
+            };
+            services.AddAutoMapper(profileAssemblyMarkerTypes);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

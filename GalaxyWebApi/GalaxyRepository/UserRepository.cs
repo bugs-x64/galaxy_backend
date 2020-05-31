@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using GalaxyDto;
 using GalaxyRepository.Contracts;
 using GalaxyRepository.Models;
@@ -10,83 +11,44 @@ using Microsoft.EntityFrameworkCore;
 namespace GalaxyRepository
 {
     public class UserRepository : IUserRepository
-    {//todo добавить автомаппер
+    {
         private readonly GalaxyContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(GalaxyContext context)
+        public UserRepository(GalaxyContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<UserDto> CreateAsync(UserDto user)
         {
             var utcNow = DateTime.UtcNow;
-            await _context.User.AddAsync(new User()
-            {
-                Username = user.Username,
-                Created = utcNow,
-                Amount = user.Amount,
-                Birthdate = user.Birthdate,
-                FirstName = user.FirstName,
-                Modified = utcNow
-            });
+            var entity = _mapper.Map<User>(user);
+            entity.Created = utcNow;
+            entity.Modified = utcNow;
+
+            await _context.User.AddAsync(entity);
 
             await _context.SaveChangesAsync(true);
 
             var userDb = await _context.User.FirstAsync(x => x.Username == user.Username);
 
-            return new UserDto()
-            {
-                Username = userDb.Username,
-                Created = userDb.Created,
-                Amount = userDb.Amount,
-                Birthdate = userDb.Birthdate,
-                FirstName = userDb.FirstName,
-                Id = userDb.Id,
-                Modified = userDb.Modified
-            };
+            return _mapper.Map<UserDto>(userDb);
         }
 
         public async Task<UserDto> GetAsync(int id)
         {
             var user = await _context.User.FindAsync(id);
 
-            if(user == null)
-                return new UserDto();
-
-            var result = new UserDto()
-            {
-                Username = user.Username,
-                Birthdate = user.Birthdate,
-                Created = user.Created,
-                FirstName = user.FirstName,
-                Amount = user.Amount,
-                Modified = user.Modified,
-                Id = user.Id
-            };
-
-            return result;
+            return user is null ? null : _mapper.Map<UserDto>(user);
         }
 
         public async Task<UserDto> GetAsync(string username)
         {
             var user = await _context.User.SingleOrDefaultAsync(x => x.Username.Equals(username));
 
-            if (user == null)
-                return null;
-
-            var result = new UserDto()
-            {
-                Username = user.Username,
-                Birthdate = user.Birthdate,
-                Created = user.Created,
-                FirstName = user.FirstName,
-                Amount = user.Amount,
-                Modified = user.Modified,
-                Id = user.Id
-            };
-
-            return result;
+            return user is null ? null : _mapper.Map<UserDto>(user);
         }
 
         public async Task<bool> UpdateAsync(UserDto user)
@@ -96,14 +58,11 @@ namespace GalaxyRepository
             if (entity == null)
                 return false;
 
-            entity.Username = user.Username;
-            entity.Birthdate = user.Birthdate;
-            entity.Created = user.Created;
-            entity.FirstName = user.FirstName;
-            entity.Amount = user.Amount;
-            entity.Modified = user.Modified;
+            var result = _mapper.Map<User>(user);
 
-            _context.User.Update(entity);
+            result.Id = entity.Id;
+
+            _context.User.Update(result);
 
             await _context.SaveChangesAsync();
 
@@ -129,17 +88,8 @@ namespace GalaxyRepository
             return Task.FromResult(_context.User
                 .Skip(skipCount)
                 .Take(pageSize)
-                .Select(user => new UserDto
-                {
-                    Username = user.Username,
-                    Birthdate = user.Birthdate,
-                    Created = user.Created,
-                    FirstName = user.FirstName,
-                    Amount = user.Amount,
-                    Modified = user.Modified,
-                    Id = user.Id
-                })
-                .AsEnumerable());
+                .AsEnumerable()
+                .Select(_mapper.Map<UserDto>));
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using GalaxyCore.Contracts;
 using GalaxyDto;
 using GalaxyRepository.Contracts;
@@ -14,26 +16,25 @@ namespace GalaxyCore.Services
     {
         private readonly IAuthRepository _authRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IAuthRepository authRepository, IUserRepository userRepository)
+        public UserService(IAuthRepository authRepository, IUserRepository userRepository, IMapper mapper)
         {
             _authRepository = authRepository;
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserDto> CreateAsync(NewUserDto newUser)
         {
-            var inputData = new UserDto()
-            {
-                Username = newUser.Username,
-                Birthdate = newUser.Birthdate,
-                FirstName = newUser.Firstname
-            };
+            var inputData = _mapper.Map<UserDto>(newUser);
 
-            var outputData = await _userRepository.CreateAsync(inputData);
-            await _authRepository.CreatePasswordAsync(outputData.Id, Encoding.UTF8.GetBytes(newUser.Password));
+            var user = await _userRepository.GetAsync(newUser.Username);
 
-            return outputData;
+            if(user != null)
+                throw new ArgumentException($"Пользователь {newUser.Username} уже существует.");
+
+            return await _userRepository.CreateAsync(inputData);
         }
 
         public Task<UserDto> GetAsync(int id)

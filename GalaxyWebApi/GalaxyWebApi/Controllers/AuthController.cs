@@ -76,7 +76,8 @@ namespace GalaxyWebApi.Controllers
                 return BadRequest();
 
             var identityName = User.Identity.Name ?? string.Empty;
-            if (identityName.Equals(changePasswordData.Username, StringComparison.InvariantCultureIgnoreCase))
+            var isIdentityNameNotEqualsRequested = !identityName.Equals(changePasswordData.Username, StringComparison.InvariantCultureIgnoreCase);
+            if (isIdentityNameNotEqualsRequested)
                 return Unauthorized();
 
             var passwordsEquals = changePasswordData.NewPassword.Equals(changePasswordData.OldPassword, StringComparison.InvariantCultureIgnoreCase);
