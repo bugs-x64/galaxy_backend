@@ -10,9 +10,9 @@ namespace GalaxyCore.Contracts
     public interface IUserService
     {
         Task<UserDto> CreateAsync(NewUserDto newUser);
-        Task<UserDto> GetAsync(int id);
+        Task<UserDto> GetAsync(string username);
         Task<bool> UpdateAsync(UserDto user);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(string username);
         Task<IEnumerable<UserDto>> GetUsersAsync(int pageNumber, int pageSize);
     }
 }

@@ -14,13 +14,11 @@ namespace GalaxyCore.Services
     /// </summary>
     public class UserService : IUserService
     {
-        private readonly IAuthRepository _authRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IAuthRepository authRepository, IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
-            _authRepository = authRepository;
             _userRepository = userRepository;
             _mapper = mapper;
         }
@@ -37,9 +35,9 @@ namespace GalaxyCore.Services
             return await _userRepository.CreateAsync(inputData);
         }
 
-        public Task<UserDto> GetAsync(int id)
+        public Task<UserDto> GetAsync(string username)
         {
-            return _userRepository.GetAsync(id);
+            return _userRepository.GetAsync(username);
         }
 
         public Task<bool> UpdateAsync(UserDto user)
@@ -47,9 +45,9 @@ namespace GalaxyCore.Services
             return _userRepository.UpdateAsync(user);
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public Task<bool> DeleteAsync(string username)
         {
-            return _userRepository.DeleteAsync(id);
+            return _userRepository.DeleteAsync(username);
         }
 
         public Task<IEnumerable<UserDto>> GetUsersAsync(int pageNumber, int pageSize)
