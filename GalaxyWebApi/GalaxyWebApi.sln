@@ -11,10 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GalaxyDto", "GalaxyDto\Gala
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GalaxyRepository", "GalaxyRepository\GalaxyRepository.csproj", "{3EB519D0-6DC5-4F97-8D58-55E13EF8953C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GalaxyCore.UnitTests", "GalaxyCore.UnitTests\GalaxyCore.UnitTests.csproj", "{B2623DB6-C97D-4D92-A9CD-CBE52E4DB28B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GalaxyRepository.IntegrationTests", "GalaxyRepository.IntegrationTests\GalaxyRepository.IntegrationTests.csproj", "{9BACA478-C9DE-4DEF-BC9A-031932EEB092}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestsCore", "TestsCore\TestsCore.csproj", "{D2961A6A-A149-4AFB-9B3B-8E923E29C69F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GalaxyWebApi.IntegrationTests", "GalaxyWebApi.IntegrationTests\GalaxyWebApi.IntegrationTests.csproj", "{5FB326DC-C437-4410-8976-250DA61113EC}"
@@ -59,22 +55,6 @@ Global
 		{3EB519D0-6DC5-4F97-8D58-55E13EF8953C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3EB519D0-6DC5-4F97-8D58-55E13EF8953C}.Release|x86.ActiveCfg = Release|Any CPU
 		{3EB519D0-6DC5-4F97-8D58-55E13EF8953C}.Release|x86.Build.0 = Release|Any CPU
-		{B2623DB6-C97D-4D92-A9CD-CBE52E4DB28B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2623DB6-C97D-4D92-A9CD-CBE52E4DB28B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2623DB6-C97D-4D92-A9CD-CBE52E4DB28B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B2623DB6-C97D-4D92-A9CD-CBE52E4DB28B}.Debug|x86.Build.0 = Debug|Any CPU
-		{B2623DB6-C97D-4D92-A9CD-CBE52E4DB28B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2623DB6-C97D-4D92-A9CD-CBE52E4DB28B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2623DB6-C97D-4D92-A9CD-CBE52E4DB28B}.Release|x86.ActiveCfg = Release|Any CPU
-		{B2623DB6-C97D-4D92-A9CD-CBE52E4DB28B}.Release|x86.Build.0 = Release|Any CPU
-		{9BACA478-C9DE-4DEF-BC9A-031932EEB092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BACA478-C9DE-4DEF-BC9A-031932EEB092}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BACA478-C9DE-4DEF-BC9A-031932EEB092}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9BACA478-C9DE-4DEF-BC9A-031932EEB092}.Debug|x86.Build.0 = Debug|Any CPU
-		{9BACA478-C9DE-4DEF-BC9A-031932EEB092}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BACA478-C9DE-4DEF-BC9A-031932EEB092}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BACA478-C9DE-4DEF-BC9A-031932EEB092}.Release|x86.ActiveCfg = Release|Any CPU
-		{9BACA478-C9DE-4DEF-BC9A-031932EEB092}.Release|x86.Build.0 = Release|Any CPU
 		{D2961A6A-A149-4AFB-9B3B-8E923E29C69F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2961A6A-A149-4AFB-9B3B-8E923E29C69F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2961A6A-A149-4AFB-9B3B-8E923E29C69F}.Debug|x86.ActiveCfg = Debug|Any CPU

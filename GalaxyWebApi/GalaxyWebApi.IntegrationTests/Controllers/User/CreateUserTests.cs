@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AutoFixture;
 using AutoFixture.Xunit2;
 using GalaxyDto;
 using GalaxyRepository.Contracts;
@@ -8,17 +9,16 @@ using Xunit;
 
 namespace GalaxyWebApi.IntegrationTests.Controllers.User
 {
-    public class CreateNewUserTests : ControllerTestsBase<Startup>, IClassFixture<WebApiFactory<Startup>>, IClassFixture<ContentProvider>
+    public class CreateUserTests : ControllerTestsBase<Startup>, IClassFixture<WebApiFactory<Startup>>, IClassFixture<ContentProvider>
     {
         private readonly ContentProvider _contentProvider;
         protected override string RouteTemplate { get; } = "[controller]";
         protected override string Controller { get; } = "User";
 
-        public CreateNewUserTests(WebApiFactory<Startup> factory, ContentProvider contentProvider) : base(factory)
+        public CreateUserTests(WebApiFactory<Startup> factory, ContentProvider contentProvider) : base(factory)
         {
             _contentProvider = contentProvider;
         }
-
 
         [Theory, AutoData]
         public async Task CreateNewUser_AllPropertiesFilled_RepositoryUsernameEqualsRequestedAsync(NewUserDto data)

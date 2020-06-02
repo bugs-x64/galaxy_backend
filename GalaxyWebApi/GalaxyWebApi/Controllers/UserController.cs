@@ -46,6 +46,10 @@ namespace GalaxyWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync(NewUserDto authData)
         {
+            var user = await _userService.GetAsync(authData.Username);
+            if (user != null)
+                return BadRequest($"{authData.Username} был создан ранее.");
+
             var result = await _userService.CreateAsync(authData);
 
             await _authService.CreatePasswordAsync(authData.Username, authData.Password);
@@ -66,7 +70,6 @@ namespace GalaxyWebApi.Controllers
         public async Task<IActionResult> GetUserAsync(string username)
         {
             var user = await _userService.GetAsync(username);
-
             if (user is null)
                 return NotFound();
 
@@ -79,6 +82,8 @@ namespace GalaxyWebApi.Controllers
         {
             if (username != user.Username)
                 return BadRequest();
+
+            //сюда можно добавить проверку через User.claims, текущий пользователь или администратор
 
             var isUpdated = await _userService.UpdateAsync(user);
             return isUpdated ? (IActionResult) Ok() : BadRequest();

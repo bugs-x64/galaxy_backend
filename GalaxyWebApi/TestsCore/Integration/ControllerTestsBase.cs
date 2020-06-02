@@ -63,7 +63,7 @@ namespace TestsCore.Integration
             else if (!string.IsNullOrEmpty(action))
                 route = route + "/" + action;
 
-            return route.ToLowerInvariant();
+            return route;
         }
 
         /// <summary>

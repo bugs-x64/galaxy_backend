@@ -24,7 +24,7 @@ namespace GalaxyCore.Services
         private static byte[] GetHashedPasswordBytes(string password)
         {
             using var sha256Hash = SHA256.Create();
-            
+
             return sha256Hash.ComputeHash(Encoding.GetBytes(password));
         }
 
@@ -39,9 +39,25 @@ namespace GalaxyCore.Services
 
             var currentPasswordHash = GetHashedPasswordBytes(password);
 
-            var isPasswordsEquals = dbPasswordHash.SequenceEqual(currentPasswordHash);
+            var isPasswordsEquals = ComparePasswords(dbPasswordHash, currentPasswordHash);
 
             return isPasswordsEquals;
+        }
+
+        private bool ComparePasswords(byte[] dbPasswordHash, byte[] currentPasswordHash)
+        {
+            if (dbPasswordHash is null || currentPasswordHash is null)
+                return false;
+
+            if (dbPasswordHash.Length != currentPasswordHash.Length)
+                return false;
+
+            for (var i = 0; i < dbPasswordHash.Length; i++)
+                if (dbPasswordHash[i] != currentPasswordHash[i])
+                    return false;
+
+            return true;
+
         }
 
         public async Task CreatePasswordAsync(string username, string password)
@@ -50,7 +66,7 @@ namespace GalaxyCore.Services
 
             var hashedPasswordBytes = GetHashedPasswordBytes(password);
 
-            await _authRepository.CreatePasswordAsync(user.Id,hashedPasswordBytes);
+            await _authRepository.CreatePasswordAsync(user.Id, hashedPasswordBytes);
         }
 
         public async Task ChangePasswordAsync(string username, string newPassword)
