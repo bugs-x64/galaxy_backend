@@ -25,7 +25,10 @@ namespace GalaxyWebApi.IntegrationTests.Controllers.Auth
         [Theory, AutoData]
         public async Task ValidateToken_CorrectToken_ResponseSuccessStatusAsync(NewUserDto data)
         {
-            await UserCreator.CreateUserAsync(Factory, _contentProvider, data, Client);
+            await Task.Delay(1000);
+            data.Username = data.Password = data.Username + "cheburek";
+            var client = Factory.CreateClient();
+            await UserCreator.CreateUserAsync(Factory, _contentProvider, data, client);
             var authData = new AuthorizationDto
             {
                 Username = data.Username,
@@ -35,23 +38,24 @@ namespace GalaxyWebApi.IntegrationTests.Controllers.Auth
             var validatePath = GetControllerActionPath("ValidateToken");
             var authDataContent = _contentProvider.GetJsonStringContent(authData);
 
-            var response = await Client.PostAsync(getTokenPath, authDataContent);
+            var response = await client.PostAsync(getTokenPath, authDataContent);
             response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadAsAsync<TokenDto>();
 
             var query = $"?token={result.access_token}";
-            response = await Client.GetAsync(validatePath + query);
+            response = await client.GetAsync(validatePath + query);
             response.EnsureSuccessStatusCode();
         }
 
         [Fact]
         public async Task ValidateToken_IncorrectToken_ResponseBadRequestAsync()
         {
+            var client = Factory.CreateClient();
             const string badToken = "badtoken";
             var path = GetControllerActionPath("ValidateToken");
             var query = $"?token={badToken}";
 
-            var response = await Client.GetAsync(path + query);
+            var response = await client.GetAsync(path + query);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
