@@ -34,17 +34,22 @@ namespace GalaxyWebApi.Controllers
 
         private static object GetUserData(UserDto user) => new
         {
-            user.Id, 
-            user.Created, 
-            user.Username, 
-            user.FirstName, 
-            user.Birthdate
+            user.Id,
+            user.Created,
+            user.Username,
+            user.FirstName,
+            user.Birthdate,
+            user.Amount
         };
 
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateAsync(NewUserDto authData)
         {
+            var user = await _userService.GetAsync(authData.Username);
+            if (user != null)
+                return BadRequest($"{authData.Username} был создан ранее.");
+
             var result = await _userService.CreateAsync(authData);
 
             await _authService.CreatePasswordAsync(authData.Username, authData.Password);
@@ -61,44 +66,35 @@ namespace GalaxyWebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserAsync(int id)
+        [HttpGet("{username}")]
+        public async Task<IActionResult> GetUserAsync(string username)
         {
-            var user = await _userService.GetAsync(id);
+            var user = await _userService.GetAsync(username);
+            if (user is null)
+                return NotFound();
+
             var result = GetUserData(user);
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateUserAsync(int id, UserDto user)
+        [HttpPut("{username}")]
+        public async Task<IActionResult> UpdateUserAsync(string username, UserDto user)
         {
-            if (id != user.Id)
+            if (username != user.Username)
                 return BadRequest();
 
-            try
-            {
-                await _userService.UpdateAsync(user);
+            //сюда можно добавить проверку через User.claims, текущий пользователь или администратор
 
-                return Ok();
-            }
-            catch (CustomException e)
-            {
-                return BadRequest(e.Message);
-            }
+            var isUpdated = await _userService.UpdateAsync(user);
+            return isUpdated ? (IActionResult) Ok() : BadRequest();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserAsync(int id)
+        [HttpDelete("{username}")]
+        public async Task<IActionResult> DeleteUserAsync(string username)
         {
-            try
-            {
-                return Ok(await _userService.DeleteAsync(id));
-            }
-            catch (CustomException e)
-            {
-                return BadRequest(e.Message);
-            }
-            
+            var isDeleted = await _userService.DeleteAsync(username);
+
+            return isDeleted ? (IActionResult) Ok() : BadRequest();
         }
     }
 }

@@ -21,6 +21,9 @@ namespace GalaxyRepository
             _mapper = mapper;
         }
 
+        private Task<User> GetUserAsync(string username) =>
+            _context.User.SingleOrDefaultAsync(user => user.Username.Equals(username));
+
         public async Task<UserDto> CreateAsync(UserDto user)
         {
             var utcNow = DateTime.UtcNow;
@@ -32,46 +35,38 @@ namespace GalaxyRepository
 
             await _context.SaveChangesAsync(true);
 
-            var userDb = await _context.User.FirstAsync(x => x.Username == user.Username);
+            var userDb = await GetUserAsync(user.Username);
 
             return _mapper.Map<UserDto>(userDb);
         }
 
-        public async Task<UserDto> GetAsync(int id)
-        {
-            var user = await _context.User.FindAsync(id);
-
-            return user is null ? null : _mapper.Map<UserDto>(user);
-        }
-
         public async Task<UserDto> GetAsync(string username)
         {
-            var user = await _context.User.SingleOrDefaultAsync(x => x.Username.Equals(username));
+            var user = await GetUserAsync(username);
 
             return user is null ? null : _mapper.Map<UserDto>(user);
         }
 
         public async Task<bool> UpdateAsync(UserDto user)
         {
-            var entity = _context.User.FirstOrDefault(item => item.Id == user.Id);
+            var entity = await GetUserAsync(user.Username);
 
             if (entity == null)
                 return false;
 
-            var result = _mapper.Map<User>(user);
+            entity.Amount = user.Amount;
+            entity.Birthdate = user.Birthdate;
+            entity.Modified = DateTime.UtcNow;
 
-            result.Id = entity.Id;
-
-            _context.User.Update(result);
-
+            _context.User.Update(entity);
             await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(string username)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await GetUserAsync(username);
             if (user == null)
                 return false;
 
