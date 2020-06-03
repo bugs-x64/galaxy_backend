@@ -12,7 +12,7 @@ env:
 jobs:
   build:
     env:
-      SOLUTION_PATH: ./${env.PROJECT_NAME}/${env.PROJECT_NAME}.sln
+      SOLUTION_PATH: ./${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.sln
     runs-on: ubuntu-latest
 
     steps:
@@ -22,12 +22,12 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore "${env.SOLUTION_PATH}"
+      run: dotnet restore "${{env.SOLUTION_PATH}}"
     - name: Build
-      run: dotnet build --configuration Release --no-restore "${env.SOLUTION_PATH}"
+      run: dotnet build --configuration Release --no-restore "${{env.SOLUTION_PATH}}"
     # интеграционное тестирвоание будет здесь падать. Нужно подготовить БД(не локальную), в которой можно будет выполнять тестирование
     #- name: Test
-    #  run: dotnet test --no-restore --verbosity normal "${env.SOLUTION_PATH}"
+    #  run: dotnet test --no-restore --verbosity normal "${{env.SOLUTION_PATH}}"
     - name: Azure WebApp
       uses: Azure/webapps-deploy@v2
       with:
