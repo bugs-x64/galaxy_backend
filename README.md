@@ -1,1 +1,1 @@
-[![Build](https://circleci.com/gh/bugs-x64/galaxy_backend.svg?style=shield )](https://app.circleci.com/pipelines/github/bugs-x64/galaxy_backend)
+![.NET Core](https://github.com/bugs-x64/galaxy_backend/workflows/.NET%20Core/badge.svg?branch=master)
