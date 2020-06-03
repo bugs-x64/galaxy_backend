@@ -22,7 +22,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore "./${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.sln"
     - name: Build
-      run: dotnet publish -c release -o /app --no-restore "./${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.sln"
+      run: |
+        mkdir ./app
+        dotnet publish -c release -o /app --no-restore "./${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.sln"
       # image
     - name: Image
       uses: docker/build-push-action@v1
