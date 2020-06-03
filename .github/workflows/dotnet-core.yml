@@ -19,7 +19,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-        
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         
       #Build
     - name: Install dependencies
@@ -45,4 +48,7 @@ jobs:
       with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }} 
           images: '${{ secrets.DOCKER_REPO }}:latest'
-          creds: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          
+    - name: Azure logout
+      run: |
+        az logout
