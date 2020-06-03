@@ -23,8 +23,8 @@ jobs:
       run: dotnet restore "./${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.sln"
     - name: Build
       run: |
-        mkdir ./app
-        dotnet publish -c release -o /app --no-restore "./${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.sln"
+        sudo mkdir ./app
+        sudo dotnet publish -c release -o /app --no-restore "./${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.sln"
       # image
     - name: Image
       uses: docker/build-push-action@v1
