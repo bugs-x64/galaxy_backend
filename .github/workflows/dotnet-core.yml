@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore "./${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.sln"
     - name: Build
-      run: dotnet publish -c release -o ${{ GITHUB_WORKSPACE }}/app --no-restore "./${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.sln"
+      run: dotnet publish -c release -o ${{ env.GITHUB_WORKSPACE }}/app --no-restore "./${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.sln"
       
       # image
     - name: Image
