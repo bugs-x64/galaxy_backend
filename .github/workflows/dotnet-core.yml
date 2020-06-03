@@ -20,9 +20,10 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore "./${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.sln"
+      run: dotnet restore "./${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.sln"
     - name: Build
-      run: dotnet build --configuration Release --no-restore "./${{env.PROJECT_NAME}}/${{env.PROJECT_NAME}}.sln"
+      run: dotnet publish -c release -o ${{ env.GITHUB_WORKSPACE }}/app --no-restore "./${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.sln"
+      
       # image
     - name: Image
       uses: docker/build-push-action@v1
@@ -35,6 +36,7 @@ jobs:
     # интеграционное тестирвоание будет здесь падать. Нужно подготовить БД(не локальную), в которой можно будет выполнять тестирование
     #- name: Test
     #  run: dotnet test --no-restore --verbosity normal "${{env.SOLUTION_PATH}}"
+      
     - name: Deploy
       uses: Azure/webapps-deploy@v2
       with:
