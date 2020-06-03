@@ -31,6 +31,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: ${{ secrets.DOCKER_REPO }}
         tags: latest
+        dockerfile: ./${{env.PROJECT_NAME}}/dockerfile
     # интеграционное тестирвоание будет здесь падать. Нужно подготовить БД(не локальную), в которой можно будет выполнять тестирование
     #- name: Test
     #  run: dotnet test --no-restore --verbosity normal "${{env.SOLUTION_PATH}}"
