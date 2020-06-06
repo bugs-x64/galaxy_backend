@@ -26,7 +26,7 @@ namespace GalaxyWebApi.Swagger
             {
                 Title = $"WebAPI {description.ApiVersion}",
                 Version = description.GroupName,
-                Description = "Web API Template",
+                Description = "Web API",
                 Contact = new OpenApiContact()
                 {
                     Name = "Web API service"
