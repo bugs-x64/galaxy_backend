@@ -1,9 +1,5 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
-RUN apt-get update && apt-get install -y --no-install-recommends gss-ntlmssp wget
-RUN wget -q https://packages.microsoft.com/config/ubuntu/19.10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-RUN dpkg -i packages-microsoft-prod.deb
-RUN apt update && apt install -y dotnet-sdk-3.1 procps apt-transport-https
-RUN dotnet tool install -g dotnet-dump
-CMD ["dotnet", "GalaxyWebApi.dll"]
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 WORKDIR /app
 COPY /build .
+ENV ASPNETCORE_URLS="https://+;http://+"
+ENTRYPOINT ["dotnet", "GalaxyWebApi.dll"]
