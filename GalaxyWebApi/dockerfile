@@ -2,6 +2,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1
 COPY GalaxyWebApi/build ./
 WORKDIR ./
-EXPOSE 5001
-EXPOSE 5000
+EXPOSE 80 5001
+EXPOSE 443 5000
 ENTRYPOINT ["dotnet", "GalaxyWebApi.dll"]
