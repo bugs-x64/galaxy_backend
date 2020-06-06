@@ -184,11 +184,6 @@ namespace GalaxyWebApi
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //swagger redirect
-            var option = new RewriteOptions();
-            option.AddRedirect("^$", "swagger");
-            app.UseRewriter(option);
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
