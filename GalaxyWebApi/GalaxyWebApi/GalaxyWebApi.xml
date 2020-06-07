@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GalaxyWebApi</name>
+    </assembly>
+    <members>
+        <member name="T:GalaxyWebApi.Controllers.AuthController">
+            <summary>
+            Контроллер авторизации.
+            </summary>
+        </member>
+        <member name="M:GalaxyWebApi.Controllers.AuthController.GetTokenAsync(GalaxyDto.AuthorizationDto)">
+            <summary>
+            Генерирует токен авторизации по указанному логину/паролю.
+            </summary>       
+            <returns>Сгенерированный токен.</returns>  
+            <response code="200">Успешная авторизация</response>
+            <response code="401">Неверный логин/пароль</response>      
+        </member>
+        <member name="M:GalaxyWebApi.Controllers.AuthController.ValidateToken(System.String)">
+            <response code="200">Валидный токен</response>
+            <response code="400">Невалидный токен</response>
+        </member>
+        <member name="M:GalaxyWebApi.Controllers.AuthController.ChangePasswordAsync(GalaxyDto.ChangePasswordDto)">
+            <response code="200">Пароль успешно изменен</response>
+            <response code="400">Ошибка в теле запроса</response>
+        </member>
+        <member name="T:GalaxyWebApi.Controllers.UserController">
+            <summary>
+            Контроллер пользователя.
+            </summary>
+        </member>
+    </members>
+</doc>
