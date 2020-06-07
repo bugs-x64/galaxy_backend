@@ -49,6 +49,7 @@ namespace GalaxyWebApi.Controllers
             return Ok(token);
         }
 
+        /// <summary>Валидация токена.</summary>
         /// <response code="200">Валидный токен</response>
         /// <response code="400">Невалидный токен</response>
         [AllowAnonymous]
@@ -66,6 +67,7 @@ namespace GalaxyWebApi.Controllers
             return isValid ? (IActionResult)Ok() : BadRequest();
         }
 
+        /// <summary>Изменение пароля.</summary>
         /// <response code="200">Пароль успешно изменен</response>
         /// <response code="400">Ошибка в теле запроса</response>
         [HttpPost]

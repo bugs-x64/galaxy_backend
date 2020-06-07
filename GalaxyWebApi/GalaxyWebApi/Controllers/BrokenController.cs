@@ -14,11 +14,5 @@ namespace GalaxyWebApi.Controllers
         {
             throw new NullReferenceException();
         }
-
-        [HttpGet]
-        public void LogicException()
-        {
-            throw new CustomException();
-        }
     }
 }

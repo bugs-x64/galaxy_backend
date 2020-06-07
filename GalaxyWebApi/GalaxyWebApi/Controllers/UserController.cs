@@ -42,6 +42,9 @@ namespace GalaxyWebApi.Controllers
             user.Amount
         };
 
+        /// <summary>
+        /// Создать пользователя.
+        /// </summary>
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateAsync(NewUserDto authData)
@@ -58,6 +61,9 @@ namespace GalaxyWebApi.Controllers
             return Ok(token);
         }
 
+        /// <summary>
+        /// Получить информацию о пользователях.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetUsersAsync(int page = 0, int size = 1000)
         {
@@ -66,6 +72,9 @@ namespace GalaxyWebApi.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Получить информацию о пользователе.
+        /// </summary>
         [HttpGet("{username}")]
         public async Task<IActionResult> GetUserAsync(string username)
         {
@@ -77,6 +86,9 @@ namespace GalaxyWebApi.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Обновить данные пользователя.
+        /// </summary>
         [HttpPut("{username}")]
         public async Task<IActionResult> UpdateUserAsync(string username, UserDto user)
         {
@@ -89,6 +101,9 @@ namespace GalaxyWebApi.Controllers
             return isUpdated ? (IActionResult) Ok() : BadRequest();
         }
 
+        /// <summary>
+        /// Удалить пользователя.
+        /// </summary>
         [HttpDelete("{username}")]
         public async Task<IActionResult> DeleteUserAsync(string username)
         {
