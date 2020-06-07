@@ -38,7 +38,7 @@ namespace GalaxyWebApi.Controllers
         [HttpPost]
         [SwaggerResponse((int)HttpStatusCode.OK)]
         [SwaggerResponse((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetTokenAsync(AuthorizationDto authData)
+        public async Task<IActionResult> TokenAsync(AuthorizationDto authData)
         {
             var isAuthorized = await _authService.AuthorizeAsync(authData.Username, authData.Password);
             if (!isAuthorized)
