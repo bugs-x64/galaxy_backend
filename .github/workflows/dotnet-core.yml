@@ -30,25 +30,27 @@ jobs:
     - name: Build
       run: dotnet publish -c release -o ./build --no-restore "./${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.sln"
       
-      # image
-    - name: Image
-      uses: docker/build-push-action@v1
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: ${{ secrets.DOCKER_REPO }}
-        tags: latest
-        dockerfile: ./${{env.PROJECT_NAME}}/dockerfile
-    # интеграционное тестирвоание будет здесь падать. Нужно подготовить БД(не локальную), в которой можно будет выполнять тестирование
+    # image сборка образа не нужна, т.к. деплой отключен. 
+    # - name: Image
+    #   uses: docker/build-push-action@v1
+    #   with:
+    #     username: ${{ secrets.DOCKER_USERNAME }}
+    #     password: ${{ secrets.DOCKER_PASSWORD }}
+    #     repository: ${{ secrets.DOCKER_REPO }}
+    #     tags: latest
+    #     dockerfile: ./${{env.PROJECT_NAME}}/dockerfile
+      
+    # интеграционное тестирование будет здесь падать. Нужно подготовить БД(не локальную), в которой можно будет выполнять тестирование
     #- name: Test
     #  run: dotnet test --no-restore --verbosity normal "${{env.SOLUTION_PATH}}"
       
-    - name: Deploy
-      uses: Azure/webapps-deploy@v2
-      with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }} 
-          images: '${{ secrets.DOCKER_REPO }}:latest'
-          
-    - name: Azure logout
-      run: |
-        az logout
+    # отключил деплой, потому что за сервера нужно платить. В жизни за все нужно платить.
+    #- name: Deploy
+    #  uses: Azure/webapps-deploy@v2
+    #  with:
+    #      app-name: ${{ secrets.AZURE_WEBAPP_NAME }} 
+    #      images: '${{ secrets.DOCKER_REPO }}:latest'
+    #      
+    #- name: Azure logout
+    #  run: |
+    #    az logout
